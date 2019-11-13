@@ -60,11 +60,14 @@
 
   {% section 'header' %}
 
-  <main role="main" id="MainContent">
+  <main role="main" id="app">
     {{ content_for_layout }}
   </main>
 
   {% section 'footer' %}
+
+  {{ 'app.js' | asset_url | script_tag }}
+
 
 </body>
 </html>
