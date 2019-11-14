@@ -31,7 +31,7 @@
   {%- endif -%}
 
   {% include 'social-meta-tags' %}
-  {% include 'style-tags', layout: 'theme' %}
+
   {% include 'css-variables' %}
 
   
@@ -49,9 +49,11 @@
     };
   </script>
 
-  {% include 'script-tags', layout: 'theme' %}
-
   {{ content_for_header }}
+
+
+  {{ 'app.css' | asset_url | stylesheet_tag }}
+
 </head>
 
 <body id="{{ page_title | handle }}" class="template-{{ template.name | handle }}">
