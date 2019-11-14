@@ -1,18 +1,9 @@
 
 import Vue from "vue";
 
+import 'jquery';
+import 'popper.js';
 
-var header = new Vue({
-    el: "#header"
-})
+import 'bootstrap';
 
-
-var minicart = new Vue({
-    el: "#minicart"
-})
-
-
-var login = new Vue({
-    el: "#login"
-})
 
