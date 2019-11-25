@@ -1,0 +1,179 @@
+{% paginate collection.products by 12 %}
+
+  <div class="{%if section.settings.is_full_width %} container-fluid {%else%} container {%endif%}">
+
+        <header role="banner" 
+                class="d-flex align-items-center" 
+                style="min-height: {{section.settings.header_height}}px;">
+            <div class="w-100">
+              <h1 class="text-{{section.settings.header_align}}">{{ collection.title }}</h1>
+              {% if collection.description != blank %}
+                <div class="text-{{section.settings.header_align}} ">
+                  {{ collection.description }}
+                </div>
+              {% endif %}
+            </div>
+        </header>
+      
+        <div class="row">
+            <div class="col-md-3">
+                {% if section.settings.collection_nav %}
+
+                  {% assign sidebarNav = section.settings.collection_nav %}
+
+                  <div class="card mb-4">
+                      <div class="card-header">
+                        <strong>{{ linklists[sidebarNav].title }}</strong>
+                      </div>
+
+                      <ul class="list-group list-group-flush">
+                          {% for link in linklists[sidebarNav].links %}
+                             <li class="list-group-item">
+                               <a href="{{ link.url }}">{{ link.title }}</a>
+                             </li>
+                          {% endfor %}
+                      </ul>
+
+                  </div>
+                  
+                {% endif %}
+
+                {% if collection.all_tags.size > 0 and section.settings.hide_tags != true %}
+                  <div class="card mb-4">
+                      <div class="card-header">
+                        <strong>Tags</strong>
+                      </div>
+
+                      <ul class="list-group list-group-flush">
+                        {% for tag in collection.all_tags %}
+                          {% if current_tags contains tag %}
+                            <li class="list-group-item bg-primary">
+                              {{ tag | link_to_remove_tag: tag }}
+                            </li>
+                          {% else %}
+                            <li class="list-group-item">
+                              {{ tag | link_to_tag: tag }}
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+
+                  </div>
+                {% endif %}
+
+            </div>
+
+            <div class="col-md-9">
+                <div class="row">
+                    {% for product in collection.products %}
+                      <div class="col-md-4">
+                        <div class="product-item">
+
+                            {% if product.featured_image != blank %}
+                              <a href="{{ product.url | within: collection }}">
+                                  <img src="{{ product.featured_image | img_url:'600x600', crop:'center' }}" alt="" class="img-fluid">
+                              </a>
+                            {% endif %}
+                            <p>
+                              <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+                            </p>
+
+                            {% include 'product-price' %}
+
+                        </div>
+
+                      </div>
+                
+                    {% endfor %}
+                </div>
+                
+                {% if paginate.pages > 1 %}
+                  {% include 'pagination' %}
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+
+  </div>
+
+  
+{% endpaginate %}
+
+
+
+{% schema %}
+  {
+    "name": "Collection",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Collection header"
+      },
+      {
+        "type": "checkbox",
+        "id": "is_full_width",
+        "label": "Full width",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "header_align",
+        "options": [
+            { 
+              "value": "right", 
+              "label": "Text right"
+            },
+            { 
+              "value": "center", 
+              "label": "Text center"
+            },
+            { 
+              "value": "left", 
+              "label": "Text left"
+            }
+        ],
+        "label": "Header alignment",
+        "default": "left"
+      },
+      {
+        "type":      "range",
+        "id":        "header_height",
+        "min":       50,
+        "max":        500,
+        "step":       5,
+        "unit":       "px",
+        "label":     "Header height",
+        "default":   120
+      },
+      {
+        "type": "header",
+        "content": "Sidebar"
+      },
+      {
+        "type": "link_list",
+        "id": "collection_nav",
+        "label": "Navigation",
+        "info": "Select custom menu nav for sidebar"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_tags",
+        "label": "Hide tags",
+        "default": false,
+        "info": "Hide tags from sidebar"
+      },
+      {
+        "type": "header",
+        "content": "Others"
+      },
+      {
+        "type": "paragraph",
+        "content": "You can add more settings here :) "
+      }
+    ]
+  
+  }
+{% endschema %}
