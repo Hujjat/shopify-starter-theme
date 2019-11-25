@@ -1,6 +1,8 @@
 {% paginate collection.products by 12 %}
+  
+  {% assign productCount = collection.all_products_count | minus: paginate.current_offset %}
 
-  <div class="{%if section.settings.is_full_width %} container-fluid {%else%} container {%endif%}">
+  <div class="{%if section.settings.is_full_width %} container-fluid {%else%} container {%endif%} vh-100">
 
         <header role="banner" 
                 class="d-flex align-items-center" 
@@ -65,6 +67,7 @@
 
             <div class="col-md-9">
                 <div class="row">
+
                     {% for product in collection.products %}
                       <div class="col-md-4">
                         <div class="product-item">
@@ -85,6 +88,14 @@
                       </div>
                 
                     {% endfor %}
+
+                    {% if productCount == 0 %}
+                        <div class="col-md-4">
+                          <h4 class="text-center">
+                              No products
+                          </h4>
+                        </div>
+                    {% endif %}
                 </div>
                 
                 {% if paginate.pages > 1 %}
