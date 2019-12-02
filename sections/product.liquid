@@ -3,37 +3,22 @@
   <div class="container mt-4">
     <div class="row">
         <div class="col-md-5">
-            {%- assign current_variant = product.selected_or_first_available_variant -%}
-            {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
-          
-            {% for image in product.images %}
-              {% capture wrapper_class %}
-                {%- unless featured_image == image -%}
-                  hide
-                {%- endunless -%}
-              {% endcapture %}
-          
-              {% include 'responsive-image' with
-                image: image,
-                max_width: 700,
-                max_height: 800,
-                image_attributes: "data-product-featured-image",
-                wrapper_class: wrapper_class,
-                wrapper_attributes: "data-product-image-wrapper",
-              %}
-            {% endfor %}
-          
-            {% if product.images.size > 1 %}
-              <ul>
-                {% for image in product.images %}
-                  <li>
-                    <a href="{{ image.src | img_url: '480x480' }}" data-thumbnail-id="{{ image.id }}" data-product-single-thumbnail{% if featured_image == image %} aria-current="true"{% endif %}>
-                      <img class="product-single__thumbnail-image" src="{{ image.src | img_url: '160x160' }}" alt="{{ image.alt | escape }}">
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+
+          {%- assign current_variant = product.selected_or_first_available_variant -%}
+          {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+        
+            <div class="product-slider">
+              {% if product.images.size > 1 %}
+                  {% for image in product.images %}
+                    <div>
+                      <a href="{{ image.src | img_url: '480x480' }}" data-thumbnail-id="{{ image.id }}" data-product-single-thumbnail{% if featured_image == image %} aria-current="true"{% endif %}>
+                        <img class="product-single__thumbnail-image" src="{{ image.src | img_url: '160x160' }}" alt="{{ image.alt | escape }}">
+                      </a>
+                    </div>
+                  {% endfor %}
+              {% endif %}
+
+            </div>
         </div> <!-- / col -->
 
         <div class="col-md-5">
