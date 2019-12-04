@@ -4,29 +4,22 @@ let slick = require('slick-carousel');
 $(".product-slider").slick({
  
     // normal options...
-    infinite: false,
+    infinite: true,
+    arrows:false,
+    slidesToShow: 1,
+    asNavFor: '.product-slider-nav'
    
-    // the magic
-    responsive: [{
+});
+
+$(".product-slider-nav").slick({
+ 
+    // normal options...
+    infinite: true,
+    arrows:false,
+    slidesToShow: 3,
+    asNavFor: '.product-slider',
+    slidesToScroll: 1,
+    centerMode: true,
+    focusOnSelect: true
    
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-          infinite: true
-        }
-   
-      }, {
-   
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          dots: true
-        }
-   
-      }, {
-   
-        breakpoint: 300,
-        settings: "unslick" // destroys slick
-   
-      }]
-  });
+});
