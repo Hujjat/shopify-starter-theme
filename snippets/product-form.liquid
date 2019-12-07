@@ -1,0 +1,55 @@
+{% form 'product', product, data-product-form: '', data-product-handle: product.handle, data-enable-history-state: 'true' %}
+
+
+  <select name="id"  class="form-control">
+    {% for variant in product.variants %}
+      <option
+        {% if variant == current_variant %}selected="selected"{% endif %}
+        {% unless variant.available %}disabled="disabled"{% endunless %}
+        value="{{ variant.id }}">
+          {{ variant.title }}
+      </option>
+    {% endfor %}
+  </select>
+
+<noscript>
+  <select name="id">
+    {% for variant in product.variants %}
+      <option
+        {% if variant == current_variant %}selected="selected"{% endif %}
+        {% unless variant.available %}disabled="disabled"{% endunless %}
+        value="{{ variant.id }}">
+          {{ variant.title }}
+      </option>
+    {% endfor %}
+  </select>
+</noscript>
+
+<div class="form-group">
+    <div class="row align-items-end">
+      <div class="col-md-6">
+          <label for="Quantity" class="form-label">{{ 'products.product.quantity' | t }}</label>
+          <input type="number" class="form-control" id="Quantity" name="quantity" value="1" min="1">
+      </div>
+      <div class="col-md-6">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            name="add"
+            data-submit-button
+            {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+              <span data-submit-button-text>
+                {% if current_variant.available %}
+                  {{ 'products.product.add_to_cart' | t }}
+                {% else %}
+                  {{ 'products.product.sold_out' | t }}
+                {% endif %}
+              </span>
+          </button>
+
+      </div>
+    </div>
+    
+
+</div>
+{% endform %}
