@@ -11215,3 +11215,9 @@ a.text-dark:focus {
   }
 }
 
+.mini-cart .dropdown-menu {
+  min-width: 380px;
+  right: 0;
+  left: auto;
+}
+

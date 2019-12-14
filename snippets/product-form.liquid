@@ -1,7 +1,7 @@
 {% form 'product', product, data-product-form: '', data-product-handle: product.handle, data-enable-history-state: 'true' %}
 
 
-  <select name="id"  class="form-control">
+  <select name="id" v-model="form.id" id="variant_id"  class="form-control">
     {% for variant in product.variants %}
       <option
         {% if variant == current_variant %}selected="selected"{% endif %}
@@ -29,11 +29,12 @@
     <div class="row align-items-end">
       <div class="col-md-6">
           <label for="Quantity" class="form-label">{{ 'products.product.quantity' | t }}</label>
-          <input type="number" class="form-control" id="Quantity" name="quantity" value="1" min="1">
+          <input type="number" v-model="form.quantity" class="form-control" id="Quantity" name="quantity" value="1" min="1">
       </div>
       <div class="col-md-6">
           <button
-            type="submit"
+            type="button"
+            @click="addToCart"
             class="btn btn-primary"
             name="add"
             data-submit-button
