@@ -11221,6 +11221,14 @@ a.text-dark:focus {
   left: auto;
 }
 
+.mini-cart .quantity {
+  width: 120px;
+}
+
+.mini-cart .quantity input {
+  max-width: 48px;
+}
+
 .noty_layout_mixin,
 #noty_layout__centerRight,
 #noty_layout__centerLeft,

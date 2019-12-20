@@ -12,7 +12,7 @@
               {% for link in linklists[section.settings.menu].links %}
                 {% if link.links != blank %}
                   <li class="nav-item dropdown">
-                    <a href="{{ link.url }}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a href="{{ link.url }}" class="nav-link dropdown-toggle" href="#" role="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       {{ link.title }}
                      
                     </a>
@@ -28,7 +28,7 @@
                   <li  class="nav-item">
                     <a href="{{ link.url }}" class="nav-link">
                       {{ link.title }}
-                    </a>
+                    </a> 
                   </li>
                 {% endif %}
               {% endfor %}
@@ -36,14 +36,12 @@
 
             <ul class="navbar-nav">
               <li class="nav-item dropdown mini-cart">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Cart
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <div class="dropdown-item-text">
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae molestias repellat, consequuntur iure quibusdam repudiandae, debitis beatae tempore aliquid nesciunt, cum impedit a exercitationem. Numquam magnam et quisquam hic harum?
-                        </p>
+                        {% include 'mini-cart' %}
                     </div>
                 </div>
               </li>

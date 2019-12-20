@@ -9,4 +9,11 @@
         right: 0;
         left: auto;
     }
+
+    .quantity{
+        width: 120px;
+        input{
+            max-width: 48px;
+        }
+    }
 }
