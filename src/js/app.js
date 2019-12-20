@@ -13,6 +13,8 @@ import 'popper.js';
 
 import 'bootstrap';
 
+window.Noty = require('noty');
+
 
 // Vue Components
 
