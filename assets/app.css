@@ -11229,6 +11229,10 @@ a.text-dark:focus {
   max-width: 48px;
 }
 
+.mini-cart .quantity .input-group-text:hover {
+  cursor: pointer;
+}
+
 .noty_layout_mixin,
 #noty_layout__centerRight,
 #noty_layout__centerLeft,

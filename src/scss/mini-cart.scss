@@ -15,5 +15,10 @@
         input{
             max-width: 48px;
         }
+        .input-group-text{
+            &:hover{
+                cursor: pointer;
+            }
+        }
     }
 }
