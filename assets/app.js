@@ -38235,9 +38235,8 @@ if (document.querySelector('.shopify-product-form')) {
 /***/ (function(module, exports) {
 
 // PREVENT INSIDE CLICK DROPDOWN 
-$('.dropdown-menu').on("click.bs.dropdown", function (e) {
-  e.stopPropagation();
-  e.preventDefault();
+$('body').on("click", ".dropdown-menu", function (e) {
+  $(this).parent().is(".show") && e.stopPropagation();
 });
 
 /***/ }),
