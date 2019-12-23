@@ -19,6 +19,7 @@ window.Noty = require('noty');
 // Vue Components
 
 require('./components/ProductForm.js');
+require('./components/CartForm.js');
 
 
 // javascript

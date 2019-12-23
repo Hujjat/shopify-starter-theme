@@ -38177,12 +38177,98 @@ window.jQuery = window.$ = jQuery;
 
 window.Noty = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js"); // Vue Components
 
-__webpack_require__(/*! ./components/ProductForm.js */ "./src/js/components/ProductForm.js"); // javascript
+__webpack_require__(/*! ./components/ProductForm.js */ "./src/js/components/ProductForm.js");
+
+__webpack_require__(/*! ./components/CartForm.js */ "./src/js/components/CartForm.js"); // javascript
 
 
 __webpack_require__(/*! ./product.js */ "./src/js/product.js");
 
 __webpack_require__(/*! ./header.js */ "./src/js/header.js");
+
+/***/ }),
+
+/***/ "./src/js/components/CartForm.js":
+/*!***************************************!*\
+  !*** ./src/js/components/CartForm.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+if (document.querySelector('.cart-form')) {
+  var productForm = new Vue({
+    el: ".cart-form",
+    delimiters: ['${', '}'],
+    data: function data() {
+      return {
+        cart: null
+      };
+    },
+    created: function created() {
+      this.getCart();
+    },
+    methods: {
+      updateCart: function updateCart() {
+        var result = this.cart.items.reduce(function (accumulator, target) {
+          return _objectSpread({}, accumulator, _defineProperty({}, target.variant_id, target.quantity));
+        }, {});
+        console.log(result);
+        axios.post('/cart/update.js', {
+          updates: result
+        }).then(function (response) {
+          new Noty({
+            type: 'success',
+            timeout: 3000,
+            layout: 'topRight',
+            text: 'Your cart items updated'
+          }).show();
+        })["catch"](function (error) {
+          new Noty({
+            type: 'error',
+            layout: 'topRight',
+            text: 'There was something wrong!!'
+          }).show();
+        });
+      },
+      getCart: function getCart() {
+        var _this = this;
+
+        axios.get('/cart.js').then(function (response) {
+          console.log(response);
+          _this.cart = response.data;
+        })["catch"](function (error) {
+          new Noty({
+            type: 'error',
+            layout: 'topRight',
+            text: 'There was an error !!'
+          }).show();
+        });
+      },
+      addToCart: function addToCart() {
+        axios.post('/cart/add.js', this.form).then(function (response) {
+          new Noty({
+            type: 'success',
+            timeout: 3000,
+            layout: 'topRight',
+            text: 'Product added to cart!'
+          }).show();
+        })["catch"](function (error) {
+          new Noty({
+            type: 'error',
+            layout: 'topRight',
+            text: 'Some notification text'
+          }).show();
+        });
+      }
+    }
+  });
+}
 
 /***/ }),
 
