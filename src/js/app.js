@@ -20,6 +20,7 @@ window.Noty = require('noty');
 
 require('./components/ProductForm.js');
 require('./components/CartForm.js');
+require('./components/MiniCart.js');
 
 
 // javascript

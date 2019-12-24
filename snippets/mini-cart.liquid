@@ -1,39 +1,55 @@
 <!-- This file has been calledl in navbar.liquid -->
 <ul class="list-unstyled mini-cart">
-    <li class="media">
-        <img src="https://via.placeholder.com/150" class="mr-3" alt="...">
-        <div class="media-body">
-            <h5 class="mt-0 mb-1">List-based media object</h5>
+  <template v-if="cart">
+      <li class="media" v-for="(item, index) in cart.items">
+          <template v-if="item.image">
+              <a :href="item.url">
+                <img class="img-fluid mr-4 mb-2" width="150" :src="item.image" alt="">
+              </a>
+          </template>
+          <div class="media-body">
 
-            <div class="price">
-                $30
-            </div>
+              <h5 class="title"><a :href="item.url">${ item.product_title }</a></h5>
+      
+              <template v-if="!item.product_has_only_default_variant">
+                <p>${ item.variant_title }</p>
+              </template>
+          
+              <div class="price">
+                <template v-if="item.original_line_price != item.line_price">
+    
+                  <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
+                    ${ item.price }
+                  <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+                  <s>${ item.original_price }</s>
 
-            <div class="input-group quantity mt-3">
+                </template>
 
-                <div class="input-group-prepend">
-                  <span class="input-group-text">-</span>
-                </div>
+                <template v-else>
+                      ${item.price}
+                </template>
+              </div>
 
-                <input type="text" value="1" class="form-control w-25" aria-label="Product quantity">
+              <div class="input-group quantity mt-3">
 
-                <div class="input-group-append">
-                  <span class="input-group-text">+</span>
-                </div>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" @click="decrement(item)">-</span>
+                  </div>
 
-            </div>
+                  <input type="text" v-model="item.quantity" class="form-control w-25" aria-label="Product quantity">
 
-        </div>
-    </li>
+                  <div class="input-group-append">
+                    <span class="input-group-text" @click="increment(item)">+</span>
+                  </div>
 
-    <li class="media my-4">
-      <img src="https://via.placeholder.com/150" class="mr-3" alt="...">
-      <div class="media-body">
-        <h5 class="mt-0 mb-1">List-based media object</h5>
+              </div>
 
-    </div>
-    </li>
+          </div>
+      </li>
 
+  </template>
+
+    
     <li class="media my-4">
         <div class="d-flex justify-content-between">
           <a href="/cart" class="btn btn-primary mr-3">Cart</a>

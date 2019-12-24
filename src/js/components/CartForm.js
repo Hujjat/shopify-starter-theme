@@ -1,5 +1,7 @@
+import { store } from "./../shared/cartData.js";
 
 if (document.querySelector('.cart-form')) {
+
 
     let productForm = new Vue({
         el:".cart-form",
@@ -7,14 +9,14 @@ if (document.querySelector('.cart-form')) {
 
         data(){
             return{
-                cart:null,
+                cartData: store.state.cartData,
             }
         },
 
-        created(){
-
-            this.getCart();
-
+        computed:{
+            cart(){
+                return this.cartData[0]
+            }
         },
 
         methods:{
@@ -24,7 +26,6 @@ if (document.querySelector('.cart-form')) {
                 let result = this.cart.items.reduce(
                      (accumulator, target) => ({ ...accumulator, [target.variant_id]: target.quantity }),
                 {});
-
 
                 console.log(result);
 
@@ -55,8 +56,6 @@ if (document.querySelector('.cart-form')) {
             getCart(){
                 axios.get('/cart.js')
                         .then( response => {
-                            console.log(response);
-
                             this.cart = response.data;
                         })
                         .catch( error => {
@@ -88,7 +87,6 @@ if (document.querySelector('.cart-form')) {
                         }).show();
                     });
             }
-
 
         }
     });

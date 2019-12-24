@@ -38179,7 +38179,9 @@ window.Noty = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js")
 
 __webpack_require__(/*! ./components/ProductForm.js */ "./src/js/components/ProductForm.js");
 
-__webpack_require__(/*! ./components/CartForm.js */ "./src/js/components/CartForm.js"); // javascript
+__webpack_require__(/*! ./components/CartForm.js */ "./src/js/components/CartForm.js");
+
+__webpack_require__(/*! ./components/MiniCart.js */ "./src/js/components/MiniCart.js"); // javascript
 
 
 __webpack_require__(/*! ./product.js */ "./src/js/product.js");
@@ -38192,14 +38194,19 @@ __webpack_require__(/*! ./header.js */ "./src/js/header.js");
 /*!***************************************!*\
   !*** ./src/js/components/CartForm.js ***!
   \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _shared_cartData_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../shared/cartData.js */ "./src/js/shared/cartData.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 if (document.querySelector('.cart-form')) {
   var productForm = new Vue({
@@ -38207,11 +38214,13 @@ if (document.querySelector('.cart-form')) {
     delimiters: ['${', '}'],
     data: function data() {
       return {
-        cart: null
+        cartData: _shared_cartData_js__WEBPACK_IMPORTED_MODULE_0__["store"].state.cartData
       };
     },
-    created: function created() {
-      this.getCart();
+    computed: {
+      cart: function cart() {
+        return this.cartData[0];
+      }
     },
     methods: {
       updateCart: function updateCart() {
@@ -38240,7 +38249,6 @@ if (document.querySelector('.cart-form')) {
         var _this = this;
 
         axios.get('/cart.js').then(function (response) {
-          console.log(response);
           _this.cart = response.data;
         })["catch"](function (error) {
           new Noty({
@@ -38263,6 +38271,119 @@ if (document.querySelector('.cart-form')) {
             type: 'error',
             layout: 'topRight',
             text: 'Some notification text'
+          }).show();
+        });
+      }
+    }
+  });
+}
+
+/***/ }),
+
+/***/ "./src/js/components/MiniCart.js":
+/*!***************************************!*\
+  !*** ./src/js/components/MiniCart.js ***!
+  \***************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _shared_cartData_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../shared/cartData.js */ "./src/js/shared/cartData.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+if (document.querySelector('.mini-cart')) {
+  var productForm = new Vue({
+    el: ".mini-cart",
+    delimiters: ['${', '}'],
+    data: function data() {
+      return {
+        cartData: _shared_cartData_js__WEBPACK_IMPORTED_MODULE_0__["store"].state.cartData
+      };
+    },
+    computed: {
+      cart: function cart() {
+        return this.cartData[0];
+      }
+    },
+    created: function created() {
+      // mini cart is on every page, that's why, we cal it once here
+      _shared_cartData_js__WEBPACK_IMPORTED_MODULE_0__["store"].getCart();
+    },
+    methods: {
+      // Remove item from cart
+      remove: function remove(item) {
+        var found = this.cart.items.find(function (product) {
+          return product.variant_id == item.variant_id;
+        });
+
+        if (found) {
+          console.log("Found : ", found);
+          this.$delete(this.cart.items, this.cart.items.indexOf(found));
+        }
+      },
+      // Increment item by 1
+      increment: function increment(item) {
+        var found = this.cart.items.find(function (product) {
+          return product.variant_id == item.variant_id;
+        });
+
+        if (found) {
+          item.quantity++;
+        }
+      },
+      // Decrement item by 1
+      decrement: function decrement(item) {
+        var found = this.cart.items.find(function (product) {
+          return product.variant_id == item.variant_id;
+        });
+
+        if (found) {
+          if (item.quantity < 2) {
+            this.remove(item);
+          } else {
+            item.quantity--;
+          }
+        }
+      },
+      updateCart: function updateCart() {
+        var result = this.cart.items.reduce(function (accumulator, target) {
+          return _objectSpread({}, accumulator, _defineProperty({}, target.variant_id, target.quantity));
+        }, {});
+        console.log(result);
+        axios.post('/cart/update.js', {
+          updates: result
+        }).then(function (response) {
+          new Noty({
+            type: 'success',
+            timeout: 3000,
+            layout: 'topRight',
+            text: 'Your cart items updated'
+          }).show();
+        })["catch"](function (error) {
+          new Noty({
+            type: 'error',
+            layout: 'topRight',
+            text: 'There was something wrong!!'
+          }).show();
+        });
+      },
+      getCart: function getCart() {
+        var _this = this;
+
+        axios.get('/cart.js').then(function (response) {
+          _this.cart = response.data;
+        })["catch"](function (error) {
+          new Noty({
+            type: 'error',
+            layout: 'topRight',
+            text: 'There was an error !!'
           }).show();
         });
       }
@@ -38353,6 +38474,38 @@ $(".product-slider-nav").slick({
   centerMode: true,
   focusOnSelect: true
 });
+
+/***/ }),
+
+/***/ "./src/js/shared/cartData.js":
+/*!***********************************!*\
+  !*** ./src/js/shared/cartData.js ***!
+  \***********************************/
+/*! exports provided: store */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "store", function() { return store; });
+// Shared data between cart and mini-cart
+var store = {
+  state: {
+    cartData: []
+  },
+  getCart: function getCart() {
+    var _this = this;
+
+    axios.get('/cart.js').then(function (response) {
+      _this.state.cartData.push(response.data);
+    })["catch"](function (error) {
+      new Noty({
+        type: 'error',
+        layout: 'topRight',
+        text: 'There was an error !!'
+      }).show();
+    });
+  }
+};
 
 /***/ }),
 
