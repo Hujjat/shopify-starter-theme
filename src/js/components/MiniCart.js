@@ -33,7 +33,6 @@ if (document.querySelector('.mini-cart')) {
             remove(item){
                 let found = this.cart.items.find(product => product.variant_id == item.variant_id);
                 if(found){
-
                     this.$delete(this.cart.items, this.cart.items.indexOf(found));
 
                 }
@@ -72,7 +71,7 @@ if (document.querySelector('.mini-cart')) {
                     id: item.key
                 }
 
-                if (item.quantity < 1) {
+                if (q < 1) {
                     this.remove(item);
                 }
 
