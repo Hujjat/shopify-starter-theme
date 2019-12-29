@@ -1,9 +1,12 @@
 import { store } from "./../shared/cartData.js";
 
+import { cloneDeep } from "lodash/cloneDeep";
+
+
 if (document.querySelector('.mini-cart')) {
 
 
-    let productForm = new Vue({
+    let MiniCart = new Vue({
         el:".mini-cart",
         delimiters: ['${', '}'],
 
@@ -31,7 +34,6 @@ if (document.querySelector('.mini-cart')) {
                 let found = this.cart.items.find(product => product.variant_id == item.variant_id);
                 if(found){
 
-                    console.log("Found : ", found);
                     this.$delete(this.cart.items, this.cart.items.indexOf(found));
 
                 }
@@ -42,7 +44,7 @@ if (document.querySelector('.mini-cart')) {
                 
                 let found = this.cart.items.find(product => product.variant_id == item.variant_id);
                 if (found) {
-                    item.quantity ++;
+                    this.updateCart(found, 1);
                 }
 
 
@@ -52,35 +54,68 @@ if (document.querySelector('.mini-cart')) {
             decrement(item){
                 let found = this.cart.items.find(product => product.variant_id == item.variant_id);
                 if (found) {
-                    if (item.quantity < 2) {
-                        this.remove(item);
-                    }else{
-                        item.quantity--;
+
+                    if (item.quantity > 0) {
+                        this.updateCart(found, -1 );
                     }
                 }
 
             },
 
-            updateCart(){
+            updateCart(item, quantity){
 
-                let result = this.cart.items.reduce(
-                     (accumulator, target) => ({ ...accumulator, [target.variant_id]: target.quantity }),
-                {});
 
-                console.log(result);
+                let q = quantity + item.quantity;
 
-                axios.post('/cart/update.js', {updates : result} )
+                let data = {
+                    quantity: q,
+                    id: item.key
+                }
+
+                if (item.quantity < 1) {
+                    this.remove(item);
+                }
+
+                axios.post('/cart/change.js', data )
                     .then( (response) => {
+
+                        // Find the current item and new item to compare the quanity
+                        let currentItem = this.cartData[0].items.find(product => product.variant_id == item.variant_id);
+                        let newItem = response.data.items.find(product => product.variant_id == item.variant_id);
+
+                        // If item exist
+                        if (currentItem) {
+                            // check if item quantity changed. Only change.js can detect this on response
+                            if(quantity > 0 && currentItem.quantity == newItem.quantity){
+
+                                new Noty({
+                                    type: 'warning',
+                                    timeout: 3000,
+                                    layout: 'topRight',
+                                    text: 'No more in stock'
+                                }).show();
+                                
+                            }else{
+                                // add one to current item
+                                currentItem.quantity += quantity;
+                                 new Noty({
+                                    type: 'success',
+                                    timeout: 3000,
+                                    layout: 'topRight',
+                                    text: 'Your cart items updated'
+                                }).show();
+
+                            }
+                        }
                         
-                        new Noty({
-                            type: 'success',
-                            timeout: 3000,
-                            layout: 'topRight',
-                            text: 'Your cart items updated'
-                        }).show();
+                        
+                       
 
                     })
                     .catch(function (error) {
+
+                        console.log(error);
+
                         new Noty({
                             type: 'error',
                             layout: 'topRight',
