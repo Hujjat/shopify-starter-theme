@@ -16,6 +16,7 @@ if (document.querySelector('.mini-cart')) {
             }
         },
 
+
         computed: {
             cart(){
                 return this.cartData[0];

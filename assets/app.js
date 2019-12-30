@@ -42212,7 +42212,7 @@ if (document.querySelector('.mini-cart')) {
           id: item.key
         };
 
-        if (item.quantity < 1) {
+        if (q < 1) {
           this.remove(item);
         }
 
@@ -42265,8 +42265,13 @@ if (document.querySelector('.mini-cart')) {
 /*!******************************************!*\
   !*** ./src/js/components/ProductForm.js ***!
   \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _shared_cartData_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../shared/cartData.js */ "./src/js/shared/cartData.js");
+
 
 if (document.querySelector('.shopify-product-form')) {
   var productForm = new Vue({
@@ -42281,7 +42286,27 @@ if (document.querySelector('.shopify-product-form')) {
     },
     methods: {
       addToCart: function addToCart() {
+        var _this = this;
+
         axios.post('/cart/add.js', this.form).then(function (response) {
+          // add data to mini cart object
+          // check if product already exist
+          var found = _shared_cartData_js__WEBPACK_IMPORTED_MODULE_0__["store"].state.cartData[0].items.find(function (product) {
+            return product.variant_id == response.data.variant_id;
+          });
+
+          if (found) {
+            found.quantity += parseInt(_this.form.quantity); // you can reset the quanity back to 1 if you want
+            // this.form.quantity = 1;
+          } else {
+            // add item at the start of array
+            _shared_cartData_js__WEBPACK_IMPORTED_MODULE_0__["store"].state.cartData[0].items.unshift(response.data);
+          } // open mini cart
+          // $('.mini-cart').dropdown('show');
+
+
+          _this.closeMiniCart();
+
           new Noty({
             type: 'success',
             timeout: 3000,
@@ -42289,12 +42314,19 @@ if (document.querySelector('.shopify-product-form')) {
             text: 'Product added to cart!'
           }).show();
         })["catch"](function (error) {
+          console.log(error);
           new Noty({
             type: 'error',
             layout: 'topRight',
             text: 'Some notification text'
           }).show();
         });
+      },
+      closeMiniCart: function closeMiniCart() {
+        // fix for boostrap dropdown javascript opening and closing
+        $('.mini-cart').addClass('show');
+        $('.mini-cart .dropdown-menu').addClass('show');
+        $('.mini-cart .dropdown-item-text').removeClass('show');
       }
     }
   });
