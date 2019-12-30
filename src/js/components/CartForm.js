@@ -14,12 +14,25 @@ if (document.querySelector('.cart-form')) {
         },
 
         computed:{
+            cart_total_price(){
+                let total = 0;
+                
+                this.cartData[0].items.forEach(item => {
+                    total += item.quantity*item.price;
+                });
+
+                return total;
+            },
             cart(){
                 return this.cartData[0]
             }
         },
 
         methods:{
+
+            total_price(item){
+                return item.price * item.quantity;
+            },
 
             updateCart(){
 
@@ -33,6 +46,7 @@ if (document.querySelector('.cart-form')) {
                 axios.post('/cart/update.js', {updates : result} )
                     .then( (response) => {
                         
+                        store.state.cartData[0] = response.data;
 
                         new Noty({
                             type: 'success',

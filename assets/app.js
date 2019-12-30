@@ -42032,7 +42032,10 @@ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquer
 window.jQuery = window.$ = jQuery;
 
 
-window.Noty = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js"); // Vue Components
+window.Noty = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js"); // Vue custom filter
+
+__webpack_require__(/*! ./filters/money.js */ "./src/js/filters/money.js"); // Vue Components
+
 
 __webpack_require__(/*! ./components/ProductForm.js */ "./src/js/components/ProductForm.js");
 
@@ -42075,11 +42078,21 @@ if (document.querySelector('.cart-form')) {
       };
     },
     computed: {
+      cart_total_price: function cart_total_price() {
+        var total = 0;
+        this.cartData[0].items.forEach(function (item) {
+          total += item.quantity * item.price;
+        });
+        return total;
+      },
       cart: function cart() {
         return this.cartData[0];
       }
     },
     methods: {
+      total_price: function total_price(item) {
+        return item.price * item.quantity;
+      },
       updateCart: function updateCart() {
         var result = this.cart.items.reduce(function (accumulator, target) {
           return _objectSpread({}, accumulator, _defineProperty({}, target.variant_id, target.quantity));
@@ -42088,6 +42101,7 @@ if (document.querySelector('.cart-form')) {
         axios.post('/cart/update.js', {
           updates: result
         }).then(function (response) {
+          _shared_cartData_js__WEBPACK_IMPORTED_MODULE_0__["store"].state.cartData[0] = response.data;
           new Noty({
             type: 'success',
             timeout: 3000,
@@ -42331,6 +42345,21 @@ if (document.querySelector('.shopify-product-form')) {
     }
   });
 }
+
+/***/ }),
+
+/***/ "./src/js/filters/money.js":
+/*!*********************************!*\
+  !*** ./src/js/filters/money.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+Vue.filter('money', function (value) {
+  var sign = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '$';
+  if (!value) return 0;
+  return sign + (value / 100).toFixed(2);
+});
 
 /***/ }),
 

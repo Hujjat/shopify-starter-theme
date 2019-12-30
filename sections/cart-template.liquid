@@ -82,14 +82,14 @@
                               <template v-if="item.original_line_price != item.line_price">
     
                                 <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
-                                  ${ item.price }
+                                  ${ item.price | money }
                                 <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
-                                <s>${ item.original_price }</s>
+                                <s>${ item.original_price | money }</s>
     
                               </template>
     
                               <template v-else>
-                                    ${item.price}
+                                    ${item.price | money }
                               </template>
     
                             </td>
@@ -103,7 +103,7 @@
                                     aria-label="{{ 'cart.general.item_quantity' | t }}">
                             </td>
                             <td data-label="{{ 'cart.label.total' | t }}">
-                              ${ item.line_price }
+                              ${ total_price(item) | money }
                             </td>
                           </tr>
             
@@ -125,7 +125,7 @@
               {% endif %}
         
                 <p>{{ 'cart.general.subtotal' | t }}</p>
-                <p>{{ cart.total_price | money }}</p>
+                <p v-if='cart'>${ cart_total_price | money }</p>
                 {% if cart.total_discounts > 0 %}
                   <p>{{ 'cart.general.savings' | t }} {{ cart.total_discounts | money }}</p>
                 {% endif %}

@@ -16,6 +16,10 @@ import 'bootstrap';
 window.Noty = require('noty');
 
 
+// Vue custom filter
+require('./filters/money.js');
+
+
 // Vue Components
 
 require('./components/ProductForm.js');
@@ -26,3 +30,4 @@ require('./components/MiniCart.js');
 // javascript
 require('./product.js');
 require('./header.js');
+
