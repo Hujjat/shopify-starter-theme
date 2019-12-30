@@ -1,4 +1,10 @@
 
+
+// Lazy loading
+import 'lazysizes';
+// import a plugin
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
+
 import Vue from "vue";
 window.Vue = Vue;
 

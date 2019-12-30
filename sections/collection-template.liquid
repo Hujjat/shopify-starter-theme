@@ -74,7 +74,8 @@
 
                             {% if product.featured_image != blank %}
                               <a href="{{ product.url | within: collection }}">
-                                  <img src="{{ product.featured_image | img_url:'600x600', crop:'center' }}" alt="" class="img-fluid">
+                                  <img src={{ product.featured_image | img_url:'300x'}} data-src="{{ product.featured_image |     img_url:'500x500', crop:'center' }}" 
+                                      alt="" class="img-fluid lazyload">
                               </a>
                             {% endif %}
                             <p>
