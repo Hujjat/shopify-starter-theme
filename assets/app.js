@@ -12592,8 +12592,8 @@ var login = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Dev\Desktop\Shopify Tuts\codeinpsire\src\js\app.js */"./src/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Dev\Desktop\Shopify Tuts\codeinpsire\src\scss\app.scss */"./src/scss/app.scss");
+__webpack_require__(/*! /Users/patrickwhite/icloud-off/DevFolder/shopify/themes/shopify-starter-theme/src/js/app.js */"./src/js/app.js");
+module.exports = __webpack_require__(/*! /Users/patrickwhite/icloud-off/DevFolder/shopify/themes/shopify-starter-theme/src/scss/app.scss */"./src/scss/app.scss");
 
 
 /***/ })
