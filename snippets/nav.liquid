@@ -1,0 +1,37 @@
+<nav role="navigation" class="navbar navbar-expand-md navbar-light bg-light">
+  <a class="navbar-brand" href="#" >
+    <img src="{{ section.settings.logo | img_url:'master' }}" width="{{section.settings.logo_max_width}}px" />
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNavDropdown">
+  <ul class="navbar-nav">
+    {% for link in linklists[section.settings.menu].links %}
+      {% if link.links != blank %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="{{ link.url }} ">
+            {{ link.title }}
+            {% include 'icon-arrow-down' %}
+          </a>
+          <ul class="dropdown-menu">
+            {% for childlink in link.links %}
+              <li>
+                <a class="dropdown-item" href="{{ childlink.url }}">
+                  {{ childlink.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ link.url }}">
+            {{ link.title }}
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+</nav>
