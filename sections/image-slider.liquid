@@ -1,0 +1,83 @@
+<section class="image-slider">
+  <h3>Carosel</h3>
+
+  <div class="bd-example">
+    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+        <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+
+
+        {% for block in section.blocks %}
+
+
+          <div class="carousel-item {% if forloop.first == true %} active {% endif %}">
+
+            <img src="{{ block.settings.image | img_url:'master' }}" class="d-block w-100" alt="{{block.settings.title}}" /> 
+            <div class="carousel-caption d-none d-md-block">
+              <h5>{{block.settings.title}}</h5>
+              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            </div>
+          </div>
+
+        {% endfor %}
+
+
+
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "image-slider",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Image Slider"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Slider Title"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Image Title"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image Slider",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}
