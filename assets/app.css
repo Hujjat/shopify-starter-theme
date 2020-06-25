@@ -11410,25 +11410,3 @@ a.text-dark:focus {
   }
 }
 
-.row {
-  border: 1px red solid;
-}
-
-.col-md-4 {
-  border: 1px blue solid;
-}
-
-.main {
-  min-height: 800px;
-}
-
-.menu {
-  height: 400px;
-  width: 400px;
-}
-
-.item {
-  height: 300px;
-  width: 300px;
-}
-
